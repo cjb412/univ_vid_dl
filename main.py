@@ -26,11 +26,11 @@ LINK_FIELD_STYLE = "font-size: 20px;" \
                    "border: 2px solid white;" \
                    "padding: 5px 10px;" \
                    "margin: 0px 5px;"
-FILE_SELECT_STYLE = "border: none; font-size: 16px; color: #bf77be;"
+FILE_SELECT_STYLE = "border: none; font-size: 16px; color: #bf77be; padding-bottom: 10px;"
 BUTTON_ENABLED_STYLE = "border: 4px solid '#BC006C'; font-size: 15px; color: white; padding: 12px 12px;"
 BUTTON_DISABLED_STYLE = "border: 4px solid '#BC006C'; font-size: 15px; color: gray; padding: 12px 12px;"
 ERROR_STYLE = "font-size: 20px; color: red; align: center;"
-SETTINGS_BACK_STYLE = "background-color: white;"
+SETTINGS_BACK_STYLE = "background-color: white; border-radius: 2px;"
 VIDEO_TITLE_STYLE = "font-weight: bold; text-align: center; margin: 0px;"
 VIDEO_DURATION_STYLE = "text-align: center;"
 
@@ -93,7 +93,7 @@ class UVDWindow(QWidget):
         self.SetGoButtonEnabled(False)
         self.downloadButton.setSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
 
-        # Make left stretch space
+        # Make stretch space
         self.searchBoxHLayout.insertStretch(0, 1)
         self.searchBoxHLayout.addLayout(subHBox)
         self.searchBoxHLayout.setStretch(1, 5)
@@ -102,6 +102,7 @@ class UVDWindow(QWidget):
         # Make vertical box for horizontal box and directory selector
         self.searchBoxVLayout = QVBoxLayout()
 
+        subVBox = QVBoxLayout()
         # Make directory selector
         self.folderSelectButton = QPushButton(f"Current Directory: {self.save_path}")
         self.folderSelectButton.clicked.connect(self.OpenFileMenu)
@@ -109,9 +110,14 @@ class UVDWindow(QWidget):
         self.folderSelectButton.setStyleSheet(FILE_SELECT_STYLE)
 
         # Nest searchbar/button in vertical search layout.
-        self.searchBoxVLayout.addLayout(self.searchBoxHLayout)
-        # Nest directory selector in vertical search layout.
-        self.searchBoxVLayout.addWidget(self.folderSelectButton)
+        subVBox.addLayout(self.searchBoxHLayout)
+        subVBox.addWidget(self.folderSelectButton)
+
+        self.searchBoxVLayout.addStretch(1)
+        self.searchBoxVLayout.addLayout(subVBox)
+        self.searchBoxVLayout.setStretch(1, 4)
+        self.searchBoxVLayout.addStretch(1)
+
         # Nest vertical search layout in main vertical layout.
         self.mainVLayout.addLayout(self.searchBoxVLayout)
 
